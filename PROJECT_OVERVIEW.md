@@ -1,289 +1,159 @@
-# 🖐️ Hand PC Control - Proyecto Completo
+# Project Overview - Hand PC Control
 
-## 📦 Resumen del Proyecto
+## Summary
 
-Este proyecto te permite **controlar tu PC Windows usando gestos de mano** capturados a través de tu webcam. Utiliza tecnologías de visión por computadora de última generación para detectar y reconocer gestos en tiempo real.
-
----
-
-## 🎯 Características Principales
-
-✅ **Control Total del Mouse**
-- Movimiento fluido del cursor
-- Click izquierdo
-- Scroll vertical
-- Arrastrar y soltar
-
-✅ **Detección en Tiempo Real**
-- 25-30 FPS en hardware moderno
-- Latencia mínima (~30-50ms)
-- Suavizado inteligente de movimientos
-
-✅ **Interfaz Visual**
-- Overlay con información en tiempo real
-- Visualización de landmarks de la mano
-- Indicadores de estado de gestos
-- Contador de FPS
-
-✅ **Modo de Práctica**
-- Aprende gestos sin controlar el mouse
-- Visualización de dedos extendidos
-- Feedback visual instantáneo
+This project enables **Windows PC control using hand gestures** captured via webcam. It leverages state-of-the-art computer vision to detect and interpret gestures in real-time.
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## Key Features
 
-| Tecnología | Versión | Propósito |
-|------------|---------|-----------|
-| **Python** | 3.11.0 | Lenguaje principal |
-| **OpenCV** | 4.8.1 | Captura y procesamiento de video |
-| **MediaPipe** | 0.10.9 | Detección de landmarks de manos |
-| **PyAutoGUI** | 0.9.54 | Control del mouse y teclado |
-| **NumPy** | 1.24.3 | Operaciones numéricas |
-| **pynput** | 1.7.6 | Control adicional de entrada |
+### Mouse Control
+- Fluid cursor movement
+- Left click
+- Vertical scroll
+- Drag and drop
 
----
+### Real-time Detection
+- 25-30 FPS on modern hardware
+- Low latency (~30-50ms)
+- Intelligent movement smoothing
 
-## 📁 Estructura del Proyecto
+### Visual Interface
+- Real-time HUD overlay
+- Hand landmark visualization
+- Gesture state indicators
+- FPS counter
 
-```
-HAND PC CONTROL/
-│
-├── 📄 hand_controller.py      # Controlador principal
-├── 📄 demo_practice.py        # Modo de práctica (sin control del mouse)
-├── 📄 test_system.py          # Script de verificación del sistema
-├── 📄 requirements.txt        # Dependencias del proyecto
-│
-├── 🚀 setup.bat               # Instalación automática
-├── 🚀 start_controller.bat    # Iniciar controlador
-├── 🚀 practice.bat            # Modo de práctica
-├── 🚀 test.bat                # Verificar sistema
-│
-├── 📖 README.md               # Documentación principal
-├── 📖 QUICK_START.md          # Guía de inicio rápido
-├── 📖 TECHNICAL_GUIDE.md      # Guía técnica avanzada
-├── 📖 PROJECT_OVERVIEW.md     # Este archivo
-│
-├── 🔧 .gitignore              # Archivos ignorados por Git
-└── 📁 venv/                   # Entorno virtual (generado)
-```
+### Practice Mode
+- Learn gestures without affecting the mouse
+- Visual feedback on extended fingers
 
 ---
 
-## 🎮 Gestos Implementados
+## Technologies Used
 
-### 1. Mover Cursor 👆
-- **Dedos**: Solo índice extendido
-- **Acción**: El cursor sigue tu dedo índice
-- **Uso**: Navegación general
-
-### 2. Click Izquierdo ✌️
-- **Dedos**: Índice + Medio extendidos
-- **Acción**: Click izquierdo del mouse
-- **Cooldown**: 0.5 segundos entre clicks
-
-### 3. Scroll 🖐️
-- **Dedos**: Todos los dedos extendidos
-- **Acción**: Scroll vertical (arriba/abajo)
-- **Uso**: Navegar por páginas largas
-
-### 4. Arrastrar y Soltar 🤏
-- **Dedos**: Pulgar + Índice (pellizcar)
-- **Acción**: Mantener para arrastrar, soltar para dejar
-- **Uso**: Mover archivos, seleccionar texto
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Python** | 3.11.0 | Core language |
+| **OpenCV** | 4.8.1 | Video capture and processing |
+| **MediaPipe** | 0.10.9 | Hand landmark detection |
+| **PyAutoGUI** | 0.9.54 | Mouse and keyboard control |
+| **NumPy** | 1.24.3 | Numerical operations |
 
 ---
 
-## 🚀 Guía de Uso Rápida
+## Implemented Gestures
 
-### Primera Vez
+### 1. Move Cursor
+- **Fingers**: Index finger only.
+- **Action**: Cursor follows index finger tip.
 
-1. **Instalar**
-   ```bash
-   setup.bat
-   ```
+### 2. Left Click
+- **Fingers**: Index + Middle fingers.
+- **Action**: Performs a left click.
+- **Cooldown**: 0.5s between clicks.
 
-2. **Verificar**
-   ```bash
-   test.bat
-   ```
+### 3. Scroll
+- **Fingers**: All fingers extended.
+- **Action**: Vertical scrolling (up/down).
 
-3. **Practicar** (recomendado)
-   ```bash
-   practice.bat
-   ```
-
-4. **Usar**
-   ```bash
-   start_controller.bat
-   ```
-
-### Uso Regular
-
-```bash
-start_controller.bat
-```
-
-Presiona `q` en la ventana del controlador para salir.
+### 4. Drag & Drop
+- **Fingers**: Thumb + Index (pinch).
+- **Action**: Pinch to resize/drag, release to drop.
 
 ---
 
-## 📊 Rendimiento
+## Usage Guide
 
-### Requisitos Mínimos
-- **CPU**: Intel i3 o equivalente
+### First Run
+1. **Install**: `setup.bat`
+2. **Verify**: `test.bat`
+3. **Practice**: `practice.bat`
+4. **Run**: `start_controller.bat`
+
+### Regular Usage
+Run `start_controller.bat`. Press `q` to quit.
+
+---
+
+## Performance
+
+### Minimum Requirements
+- **CPU**: Intel i3 or equivalent
 - **RAM**: 4 GB
 - **Webcam**: 480p @ 15fps
 - **OS**: Windows 10/11
 
-### Rendimiento Esperado
-- **FPS**: 15-30 (dependiendo del hardware)
-- **CPU**: 15-25% de uso
-- **RAM**: ~200-300 MB
-- **Latencia**: 30-80ms
+### Expected Performance
+- **FPS**: 15-30 (hardware dependent)
+- **CPU Usage**: 15-25%
+- **Latency**: 30-80ms
 
 ---
 
-## 🎓 Casos de Uso
+## Use Cases
 
-### 🎤 Presentaciones
-- Control de slides sin tocar el teclado
-- Interacción natural con la audiencia
-- Apuntar y hacer click en elementos
+### Presentations
+- Slide control without physical devices.
+- Pointing and clicking on screen elements.
 
-### 🌐 Navegación Web
-- Scroll por páginas
-- Click en enlaces
-- Navegación hands-free
+### Web Navigation
+- Scrolling through pages.
+- Clicking links.
 
-### 📝 Productividad
-- Selección de texto
-- Arrastrar archivos
-- Navegación en documentos
+### Productivity
+- Text selection.
+- File management.
 
-### 🎮 Entretenimiento
-- Juegos casuales
-- Control de media players
-- Navegación en aplicaciones
-
-### ♿ Accesibilidad
-- Control alternativo del mouse
-- Ideal para personas con movilidad limitada
-- Interacción sin contacto
+### Accessibility
+- Alternative mouse control method.
+- Touch-free interaction.
 
 ---
 
-## 🔧 Personalización
+## Customization
 
-El proyecto está diseñado para ser fácilmente personalizable:
+The project is designed for easy customization:
 
-### Ajustar Sensibilidad
-```python
-# En hand_controller.py
-self.smoothing = 5  # Cambiar entre 1-10
-```
+- **Sensitivity**: Adjust `self.smoothing` in `hand_controller.py`.
+- **New Gestures**: Add conditions in `detect_gesture()`.
+- **Custom Actions**: Map gestures to keyboard shortcuts using `pyautogui`.
 
-### Agregar Nuevos Gestos
-```python
-# Definir nuevo patrón de dedos
-if thumb and middle and not index:
-    return GestureState.CUSTOM_ACTION
-```
-
-### Modificar Acciones
-```python
-# Agregar click derecho, atajos de teclado, etc.
-pyautogui.rightClick()
-pyautogui.hotkey('ctrl', 'c')
-```
-
-Consulta `TECHNICAL_GUIDE.md` para más detalles.
+See `TECHNICAL_GUIDE.md` for details.
 
 ---
 
-## 🐛 Solución de Problemas
+## Troubleshooting
 
-### Cámara no detectada
-- Cierra otras aplicaciones que usen la cámara
-- Verifica permisos de la cámara en Windows
-
-### Gestos no reconocidos
-- Mejora la iluminación
-- Usa un fondo uniforme
-- Mantén la mano a 30-60cm de la cámara
-
-### Rendimiento bajo
-- Cierra aplicaciones innecesarias
-- Reduce la resolución de la cámara
-- Ajusta `model_complexity` en MediaPipe
+- **Camera Issues**: Check permissions and ensure no other app is using the webcam.
+- **Recognition Issues**: Check lighting and background contrast.
+- **Performance**: Lower camera resolution or MediaPipe complexity if lagging.
 
 ---
 
-## 📚 Documentación Adicional
+## Security & Privacy
 
-- **README.md**: Documentación completa con instalación y uso
-- **QUICK_START.md**: Guía rápida en español
-- **TECHNICAL_GUIDE.md**: Arquitectura, algoritmos y personalización
-- **Código fuente**: Comentarios detallados en cada archivo
-
----
-
-## 🔒 Seguridad y Privacidad
-
-✅ **100% Local**: Todo el procesamiento se hace en tu PC  
-✅ **Sin Internet**: No requiere conexión a internet  
-✅ **Sin Datos Enviados**: Ningún dato sale de tu computadora  
-✅ **Open Source**: Código completamente visible y auditable  
+- **Local Processing**: All computation is done on your machine.
+- **Offline**: No internet connection required.
+- **Open Source**: Full code transparency.
 
 ---
 
-## 🎯 Próximas Mejoras Sugeridas
+## Future Improvements
 
-- [ ] Soporte para dos manos simultáneas
-- [ ] Gestos dinámicos (movimientos en el tiempo)
-- [ ] Click derecho con gesto personalizado
-- [ ] Perfiles de gestos guardables
-- [ ] Integración con comandos de voz
-- [ ] Soporte para múltiples monitores
-- [ ] Calibración automática por usuario
-- [ ] Grabación y reproducción de macros
+- [ ] Dual hand support
+- [ ] Dynamic gestures (motion-based)
+- [ ] Custom gesture profiles
+- [ ] Voice command integration
+- [ ] Macro recording
 
 ---
 
-## 📞 Soporte
+## License
 
-Si encuentras problemas:
-
-1. Revisa `QUICK_START.md` para soluciones comunes
-2. Ejecuta `test.bat` para diagnosticar el sistema
-3. Consulta `TECHNICAL_GUIDE.md` para configuración avanzada
-4. Revisa los comentarios en el código fuente
+This project is open source and available for personal and educational use.
 
 ---
 
-## 📄 Licencia
-
-Este proyecto es de código abierto y está disponible para uso personal y educativo.
-
----
-
-## 🙏 Agradecimientos
-
-Este proyecto utiliza las siguientes tecnologías de código abierto:
-
-- **Google MediaPipe**: Framework de ML para detección de manos
-- **OpenCV**: Biblioteca de visión por computadora
-- **PyAutoGUI**: Automatización de GUI en Python
-
----
-
-## ✨ Conclusión
-
-Este proyecto demuestra el poder de la visión por computadora moderna para crear interfaces naturales e intuitivas. Con solo una webcam y Python, puedes controlar tu PC usando gestos de mano en tiempo real.
-
-**¡Disfruta controlando tu PC con las manos!** 🎉
-
----
-
-*Creado con ❤️ usando Python, OpenCV y MediaPipe*
+*Built with Python, OpenCV, and MediaPipe.*
