@@ -1,168 +1,139 @@
-# 🚀 Guía de Ejecución - Hand Gesture PC Controller
+# Execution Guide - Hand Gesture PC Controller
 
-## ⚠️ IMPORTANTE: Cómo Ejecutar los Scripts
+## Important: How to Run the Scripts
 
-Hay **DOS formas** de ejecutar los scripts, dependiendo de dónde estés:
-
----
-
-## 📍 Opción 1: Desde el Explorador de Archivos (RECOMENDADO)
-
-### ✅ Más Fácil y Confiable
-
-Simplemente haz **doble click** en los archivos `.bat`:
-
-- 🔧 `setup.bat` - Instalación inicial
-- 🎮 `practice.bat` - Modo de práctica
-- 🚀 `start_controller.bat` - Iniciar controlador
-- 🧪 `test.bat` - Verificar sistema
-
-**Esto funciona siempre sin problemas.**
+There are **TWO ways** to run the scripts, depending on your environment:
 
 ---
 
-## 📍 Opción 2: Desde la Terminal
+## Option 1: File Explorer (RECOMMENDED)
 
-### Si estás en CMD (Command Prompt):
+### Easiest and Most Reliable
+
+Simply **double-click** the `.bat` files:
+
+- `setup.bat` - Initial installation
+- `practice.bat` - Practice mode
+- `start_controller.bat` - Start controller
+- `test.bat` - specific system test
+
+**This method works consistently without compatibility issues.**
+
+---
+
+## Option 2: Terminal / Command Line
+
+### CMD (Command Prompt)
 
 ```cmd
 practice.bat
 ```
 
-### Si estás en PowerShell:
+### PowerShell
 
-Tienes 2 opciones:
+You have 2 options:
 
-**A) Ejecutar el .bat desde CMD:**
+**A) Run the .bat via CMD:**
 ```powershell
 cmd /c practice.bat
 ```
 
-**B) Usar los scripts PowerShell (archivos .ps1):**
+**B) Use the PowerShell scripts (.ps1):**
 ```powershell
 .\practice.ps1
 ```
 
 ---
 
-## 🎯 Todos los Comandos Disponibles
+## All Available Commands
 
-### Desde CMD:
+### From CMD
 ```cmd
-setup.bat              # Instalación
-test.bat               # Verificar sistema
-practice.bat           # Modo de práctica
-start_controller.bat   # Iniciar controlador
+setup.bat              # Install
+test.bat               # Verify
+practice.bat           # Practice Mode
+start_controller.bat   # Start Controller
 ```
 
-### Desde PowerShell:
+### From PowerShell
 ```powershell
-# Opción 1: Ejecutar .bat desde CMD
+# Option 1: Run .bat via cmd
 cmd /c setup.bat
-cmd /c test.bat
-cmd /c practice.bat
-cmd /c start_controller.bat
 
-# Opción 2: Usar scripts PowerShell
+# Option 2: Use .ps1 scripts
 .\test.ps1
 .\practice.ps1
 .\start_controller.ps1
 ```
 
-### Desde Explorador de Archivos:
+### From File Explorer
 ```
-Doble click en cualquier archivo .bat
+Double-click any .bat file
 ```
 
 ---
 
-## ❓ ¿Por Qué Este Problema?
+## Why Two Types of Scripts?
 
-Los archivos `.bat` están diseñados para **CMD (Command Prompt)**, no para PowerShell. Cuando ejecutas un `.bat` directamente en PowerShell, a veces hay problemas de compatibilidad.
+Batch files (`.bat`) are designed for **CMD**, not PowerShell. Running them directly in PowerShell can sometimes cause path or environment issues.
 
-**Soluciones:**
-1. ✅ **Doble click** en el archivo (siempre funciona)
-2. ✅ Ejecutar con `cmd /c nombre.bat` desde PowerShell
-3. ✅ Usar los archivos `.ps1` desde PowerShell
-
----
-
-## 🎮 Inicio Rápido
-
-### Primera Vez:
-
-1. **Doble click en:** `setup.bat`
-   - Espera a que termine (1-2 minutos)
-
-2. **Doble click en:** `test.bat`
-   - Verifica que todo funcione
-
-3. **Doble click en:** `practice.bat`
-   - Practica los gestos sin controlar el mouse
-
-4. **Doble click en:** `start_controller.bat`
-   - ¡Empieza a controlar tu PC!
-
-### Uso Regular:
-
-**Doble click en:** `start_controller.bat`
+**Solutions:**
+1. **Double-click** the file (Recommended).
+2. Execute with `cmd /c script.bat` in PowerShell.
+3. Use the provided `.ps1` files in PowerShell.
 
 ---
 
-## 🔧 Solución al Error que Tuviste
+## Quick Start Summary
 
-El error que viste:
-```
-ERROR: Virtual environment not found!
-Please run setup.bat first.
-```
+### First Time:
 
-**Causa:** Ejecutaste `practice.bat` desde PowerShell directamente.
+1. **Double-click:** `setup.bat` (Wait for completion)
+2. **Double-click:** `test.bat` (Verify system)
+3. **Double-click:** `practice.bat` (Practice gestures)
+4. **Double-click:** `start_controller.bat` (Start control)
 
-**Solución:**
-1. ✅ Haz doble click en `practice.bat` desde el explorador
-2. ✅ O ejecuta: `cmd /c practice.bat` en PowerShell
-3. ✅ O ejecuta: `.\practice.ps1` en PowerShell
+### Regular Use:
 
-Ahora los scripts están actualizados y deberían funcionar mejor, pero la forma más confiable sigue siendo hacer **doble click** en los archivos `.bat`.
+**Double-click:** `start_controller.bat`
 
 ---
 
-## 📝 Resumen de Archivos
+## File Summary
 
-### Scripts Batch (para CMD o doble click):
+### Batch Scripts (CMD / Double-click):
 - `setup.bat`
 - `test.bat`
 - `practice.bat`
 - `start_controller.bat`
 
-### Scripts PowerShell (para PowerShell):
+### PowerShell Scripts:
 - `test.ps1`
 - `practice.ps1`
 - `start_controller.ps1`
 
-### Código Python:
+### Python Code:
 - `hand_controller.py`
 - `demo_practice.py`
 - `test_system.py`
 
 ---
 
-## ✅ Verificación Rápida
+## Quick Verification
 
-Para verificar que todo está bien instalado:
+To verify installation is correct:
 
-**Desde Explorador:**
-- Doble click en `test.bat`
+**From Explorer:**
+- Double-click `test.bat`
 
-**Desde PowerShell:**
+**From PowerShell:**
 ```powershell
 cmd /c test.bat
-# o
+# or
 .\test.ps1
 ```
 
-Deberías ver:
+You should see:
 ```
 [OK] Camera PASS
 [OK] MediaPipe PASS
@@ -171,10 +142,4 @@ Deberías ver:
 
 ---
 
-## 🎯 Próximos Pasos
-
-1. ✅ Verifica que el sistema funcione: `test.bat`
-2. ✅ Practica los gestos: `practice.bat`
-3. ✅ Usa el controlador: `start_controller.bat`
-
-**¡Disfruta controlando tu PC con gestos!** 🎉
+**Enjoy controlling your PC with hand gestures!**
