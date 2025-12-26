@@ -1,172 +1,136 @@
-# 🚀 Inicio Rápido - Hand Gesture PC Controller
+# Quick Start - Hand Gesture PC Controller
 
-## Instalación en 3 Pasos
+## Installation in 3 Steps
 
-### 1️⃣ Ejecutar Setup
+### 1. Run Setup
 ```bash
 setup.bat
 ```
-Esto creará el entorno virtual e instalará todas las dependencias automáticamente.
+This will create the virtual environment and install all dependencies automatically.
 
-### 2️⃣ Probar el Sistema (Opcional pero Recomendado)
+### 2. Test the System (Optional but Recommended)
 ```bash
 test.bat
 ```
-Verifica que la cámara, MediaPipe y PyAutoGUI funcionen correctamente.
+Verifies that the camera, MediaPipe, and PyAutoGUI are working correctly.
 
-### 3️⃣ Iniciar el Controlador
+### 3. Start the Controller
 ```bash
 start_controller.bat
 ```
-¡Listo! Ahora puedes controlar tu PC con gestos de mano.
+Ready! You can now control your PC with hand gestures.
 
 ---
 
-## 🎮 Controles de Gestos
+## Gesture Controls
 
-### Mover el Cursor (NUEVO: Modo Touchpad)
-**Gesto**: ☝️ Solo dedo índice extendido  
-**Acción**: Funciona como un touchpad invisible. 
-Mueve el dedo para empujar el cursor. Si llegas al borde de tu "zona cómoda", simplemente **baja el dedo (o cierra la mano)**, reposiciona tu mano al centro, levanta el dedo índice de nuevo y sigue moviendo. ¡Como levantar el dedo en un touchpad!
+### Move Cursor (Touchpad Mode)
+**Gesture**: Index finger extended.
+**Action**: Works like an invisible touchpad. Move your finger to push the cursor. If you reach the edge of your "comfortable zone", simply lower your finger (or close your hand), reposition your hand to the center, lift your index finger again, and continue moving. Just like lifting your finger on a physical touchpad!
 
-**Tip**: No necesitas mover el brazo entero, solo la muñeca o pequeños movimientos funcionan mejor gracias a la alta sensibilidad.
+**Tip**: You don't need to move your entire arm; wrist movements work best thanks to the high sensitivity.
 
 ```
-     ☝️
-    /|      (Mueve como si tocaras
-   / |       un touchpad en el aire)
+     ^
+    /|      (Move as if touching
+   / |       a touchpad in the air)
   /  |
 ```
 
-### Click Izquierdo
-**Gesto**: ✌️ Índice + Medio extendidos  
-**Acción**: Realiza un click izquierdo
+### Left Click
+**Gesture**: Index + Middle fingers extended.
+**Action**: Performs a left click.
 
 ```
-    ✌️
-    /|\
-   / | \
-  /  |  \
+    ^ ^
+    | |
+   /| |\
+  / | | \
 ```
 
-### Scroll (Desplazamiento)
-**Gesto**: 🖐️ Todos los dedos extendidos  
-**Acción**: Mueve la mano arriba/abajo para hacer scroll
+### Scroll
+**Gesture**: All fingers extended.
+**Action**: Move hand up/down to scroll.
 
 ```
-    🖐️
-   /||||\
-  / |||| \
- /  ||||  \
+   ^ ^ ^ ^ ^
+   | | | | |
+  /| | | | |\
 ```
 
-### Arrastrar y Soltar
-**Gesto**: 🤏 Pulgar + Índice (como pellizcar)  
-**Acción**: Mantén el gesto para arrastrar, suelta para soltar
+### Drag and Drop
+**Gesture**: Thumb + Index (pinch).
+**Action**: Hold to drag, release to drop.
 
 ```
-    🤏
-    /\
-   /  \
-  /    \
+    / \
+   /   \
+  /     \
 ```
 
 ---
 
-## ⚙️ Configuración Recomendada
+## Recommended Configuration
 
-### Posición Óptima
-- **Distancia**: 30-60 cm de la cámara
-- **Iluminación**: Buena luz frontal (evita contraluz)
-- **Fondo**: Preferiblemente uniforme y sin movimiento
-- **Altura**: Cámara a la altura de tu pecho/cara
+### Optimal Position
+- **Distance**: 30-60 cm from the camera.
+- **Lighting**: Good frontal lighting (avoid backlight).
+- **Background**: Preferably uniform/static.
+- **Height**: Camera at chest/face level.
 
-### Consejos para Mejor Rendimiento
-1. **Mantén la mano dentro del cuadro** de la cámara
-2. **Gestos claros**: Extiende bien los dedos para cada gesto
-3. **Movimientos suaves**: Evita movimientos bruscos
-4. **Practica primero**: Familiarízate con los gestos antes de usar aplicaciones importantes
+### Tips for Best Performance
+1. **Keep hand in frame**: Ensure your hand is visible to the camera.
+2. **Clear gestures**: Extend fingers clearly.
+3. **Smooth movements**: Avoid rapid, jerky motions.
+4. **Practice**: Familiarize yourself with gestures in a safe environment first.
 
 ---
 
-## 🔧 Solución de Problemas Comunes
+## Common Troubleshooting
 
-### La cámara no se detecta
+### Camera not detected
 ```bash
-# Verifica que la cámara funcione
+# Verify camera function
 test.bat
 ```
-- Asegúrate de que ninguna otra aplicación esté usando la cámara
-- Prueba cerrar Zoom, Teams, Skype, etc.
+- Ensure no other application is using the camera (Zoom, Teams, etc.).
 
-### Los gestos no se reconocen
-- Mejora la iluminación
-- Acércate o aléjate de la cámara
-- Asegúrate de que tu mano sea claramente visible
-- Evita fondos con colores similares a tu piel
+### Gestures not recognized
+- Improve lighting.
+- Adjust distance from camera.
+- Ensure hand contrast with background.
 
-### El cursor se mueve de forma errática
-- Mejora la iluminación
-- Reduce movimientos de fondo
-- Ajusta el parámetro `smoothing` en `hand_controller.py` (línea ~30)
+### Erratic cursor movement
+- Improve lighting.
+- Adjust `smoothing` in `hand_controller.py`.
 
-### Clicks accidentales
-- Aumenta `click_delay` en `hand_controller.py` (línea ~35)
-- Practica hacer gestos más deliberados
+### Accidental clicks
+- Increase `click_delay` in `hand_controller.py`.
 
 ---
 
-## 📝 Comandos Útiles
+## Useful Commands
 
-| Comando | Descripción |
+| Command | Description |
 |---------|-------------|
-| `setup.bat` | Instala dependencias (solo primera vez) |
-| `test.bat` | Verifica que todo funcione |
-| `start_controller.bat` | Inicia el controlador de gestos |
-| `q` (en ventana) | Cierra el controlador |
+| `setup.bat` | Installs dependencies (first time only) |
+| `test.bat` | System verification |
+| `start_controller.bat` | Starts the gesture controller |
+| `q` (in window) | Quits the controller |
 
 ---
 
-## 🎯 Casos de Uso
+## Use Cases
 
-### Presentaciones
-- Navega por slides sin tocar el teclado
-- Apunta y haz click en elementos importantes
-
-### Navegación Web
-- Scroll por páginas web
-- Click en enlaces y botones
-
-### Edición de Documentos
-- Selecciona texto (arrastra)
-- Navega por documentos largos (scroll)
-
-### Gaming Casual
-- Juegos de apuntar y hacer click
-- Navegación en menús
+- **Presentations**: Navigate slides without a clicker.
+- **Web Navigation**: Scroll and click hands-free.
+- **Media Control**: Play/Pause or adjust volume (customizable).
+- **Casual Gaming**: Point-and-click games.
 
 ---
 
-## ⚠️ Notas Importantes
+## Important Notes
 
-1. **Fail-safe desactivado**: El fail-safe de PyAutoGUI está desactivado para permitir movimientos suaves. Ten cuidado al usar el controlador.
-
-2. **Rendimiento**: El sistema usa ~15-25% de CPU en hardware moderno. Si experimentas lag, cierra otras aplicaciones.
-
-3. **Privacidad**: Todo el procesamiento se hace localmente. No se envía ningún dato a internet.
-
-4. **Práctica**: Tómate 5-10 minutos para practicar los gestos antes de usar en tareas importantes.
-
----
-
-## 📚 Más Información
-
-- **README.md**: Documentación completa del proyecto
-- **TECHNICAL_GUIDE.md**: Guía técnica y personalización avanzada
-- **hand_controller.py**: Código fuente principal
-
----
-
-## 🎉 ¡Disfruta controlando tu PC con gestos!
-
-Si tienes problemas, revisa la sección de solución de problemas o consulta la documentación técnica.
+1. **Fail-safe**: PyAutoGUI fail-safe is disabled for smoother operation. Use with caution.
+2. **Performance**: Uses 15-25% CPU on modern hardware.
+3. **Privacy**: All processing is local. No data is sent to the internet.
