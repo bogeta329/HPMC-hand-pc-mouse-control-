@@ -1,290 +1,147 @@
-# 🎯 Guía Técnica - Hand Gesture PC Controller
+# Technical Guide - Hand Gesture PC Controller
 
-## 📐 Arquitectura del Sistema
+## System Architecture
 
-### Componentes Principales
+### Main Components
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Hand Controller                       │
-├─────────────────────────────────────────────────────────┤
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │   OpenCV     │  │  MediaPipe   │  │  PyAutoGUI   │  │
-│  │ (Captura de  │→ │ (Detección   │→ │  (Control    │  │
-│  │   Video)     │  │  de Manos)   │  │  del Mouse)  │  │
-│  └──────────────┘  └──────────────┘  └──────────────┘  │
-└─────────────────────────────────────────────────────────┘
-```
+- **OpenCV**: Handles video capture from the webcam.
+- **MediaPipe**: Performs hand landmark detection (21 points per hand).
+- **PyAutoGUI**: Executes mouse and keyboard actions based on interpreted gestures.
 
-### Flujo de Datos
+### Data Flow
 
-1. **Captura**: OpenCV captura frames de la webcam (640x480 @ 30fps)
-2. **Detección**: MediaPipe procesa el frame y detecta 21 landmarks por mano
-3. **Análisis**: Algoritmo personalizado analiza la posición de los dedos
-4. **Reconocimiento**: Se identifica el gesto basado en el estado de los dedos
-5. **Acción**: PyAutoGUI ejecuta la acción correspondiente en el sistema
+1. **Capture**: OpenCV grabs frames (default 640x480 or 1280x720).
+2. **Detection**: MediaPipe processes the frame to find hand landmarks.
+3. **Analysis**: Custom algorithm calculates finger states (extended vs folded).
+4. **Recognition**: Pattern matching identifies the specific gesture.
+5. **Action**: PyAutoGUI simulates the corresponding mouse/keyboard event.
 
-## 🧠 Algoritmo de Detección de Gestos
+## Gesture Detection Algorithm
 
-### Landmarks de MediaPipe
+### MediaPipe Landmarks
 
-MediaPipe detecta 21 puntos clave en cada mano:
+The system tracks 21 key points on the hand:
+- 0: Wrist
+- 4: Thumb Tip
+- 8: Index Tip
+- 12: Middle Tip
+- 16: Ring Tip
+- 20: Pinky Tip
 
-```
-        8   12  16  20
-        |   |   |   |
-    4   |   |   |   |
-    |   7   11  15  19
-    |   |   |   |   |
-    3   6   10  14  18
-    |   |   |   |   |
-    2   5   9   13  17
-    |   └───┴───┴───┘
-    1       PALM
-    |
-    0 (WRIST)
-```
+(And intermediate joints for each finger)
 
-### Detección de Dedos Extendidos
+### Finger Extension Logic
 
-```python
-# Pulgar: Comparación horizontal (eje X)
-thumb_extended = thumb_tip.x < thumb_ip.x
+- **Thumb**: Comparisons are made on the X-axis (horizontal).
+  - Extended if tip is further out than the knuckle.
+- **Fingers**: Comparisons are made on the Y-axis (vertical).
+  - Extended if tip is higher (lower Y value) than the PIP joint.
 
-# Otros dedos: Comparación vertical (eje Y)
-finger_extended = finger_tip.y < finger_pip.y
-```
+### Recognition Logic
 
-### Gestos Reconocidos
+| Gesture | Finger State (T,I,M,R,P) | State Enum | Action |
+|---------|--------------------------|------------|--------|
+| Pointer | `[?, T, F, F, F]` | MOVING | Move Cursor |
+| Click | `[?, T, T, F, F]` | CLICKING | Left Click |
+| Scroll | `[?, T, T, T, T]` | SCROLLING | Scroll |
+| Drag | `[T, T, F, F, F]` | DRAGGING | Drag & Drop |
 
-| Gesto | Dedos Extendidos | Estado | Acción |
-|-------|------------------|--------|--------|
-| ☝️ | `[?, T, F, F, F]` | MOVING | Mover cursor |
-| ✌️ | `[?, T, T, F, F]` | CLICKING | Click izquierdo |
-| 🖐️ | `[?, T, T, T, T]` | SCROLLING | Scroll vertical |
-| 🤏 | `[T, T, F, F, F]` | DRAGGING | Arrastrar y soltar |
+*T=True (Extended), F=False (Folded), ?=Any*
 
-*T = True (extendido), F = False (doblado), ? = cualquiera*
+## Configuration Parameters
 
-## ⚙️ Parámetros de Configuración
+### MediaPipe Settings
 
-### MediaPipe Hands
-
+Located in `__init__`:
 ```python
 self.hands = self.mp_hands.Hands(
-    static_image_mode=False,        # Modo video (no imagen estática)
-    max_num_hands=1,                # Detectar solo 1 mano
-    min_detection_confidence=0.7,   # Confianza mínima para detección
-    min_tracking_confidence=0.7     # Confianza mínima para seguimiento
+    static_image_mode=False,
+    max_num_hands=1,
+    min_detection_confidence=0.7,
+    min_tracking_confidence=0.7
 )
 ```
+- **confidence**: Higher (0.8+) = stricter, more precise. Lower (0.5) = faster, forgiving lighting.
 
-**Ajustes recomendados:**
-- **Buena iluminación**: `min_detection_confidence=0.7`
-- **Poca iluminación**: `min_detection_confidence=0.5`
-- **Movimientos rápidos**: `min_tracking_confidence=0.5`
-- **Precisión máxima**: ambos valores a `0.8` o más
+### Cursor Smoothing
 
-### Suavizado del Cursor
-
+To prevent jitter, a smoothing algorithm is applied to coordinates:
 ```python
-self.smoothing = 5  # Factor de suavizado (1-10)
-smooth_x = prev_x + (x - prev_x) / smoothing
+self.smoothing = 5
+new_pos = prev_pos + (target_pos - prev_pos) / smoothing
+```
+- **Value 1**: No smoothing (fast, raw).
+- **Value 10**: Heavy smoothing (slow, fluid).
+
+### Click Cooldown
+
+Prevents double-clicking by accident:
+```python
+self.click_delay = 0.5 # Seconds
 ```
 
-**Efectos del factor de suavizado:**
-- `smoothing = 1`: Sin suavizado (movimiento directo pero nervioso)
-- `smoothing = 5`: Balance entre precisión y suavidad (recomendado)
-- `smoothing = 10`: Muy suave pero con lag notable
+## Advanced Customization
 
-### Cooldown de Clicks
+### Adding a New Gesture
 
+1. **Define Pattern**: In `detect_gesture`, add a condition for the finger state.
+2. **Add Enum**: Add a news state to `GestureState`.
+3. **Map Action**: In the main loop, check for the new state and execute code.
+
+### Custom Actions
+
+You can use any PyAutoGUI function:
+- `pyautogui.rightClick()`
+- `pyautogui.doubleClick()`
+- `pyautogui.hotkey('ctrl', 'c')`
+- `pyautogui.write('text')`
+
+## Performance Optimization
+
+### Latency Reduction
+
+- Reduce camera resolution:
+  ```python
+  self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+  ```
+- Decrease MediaPipe Model Complexity:
+  ```python
+  model_complexity=0
+  ```
+
+### FPS Improvement
+
+- Process every Nth frame (skip frames) if CPU is limited.
+- Ensure good lighting to help MediaPipe track faster.
+
+## Debugging
+
+### Logging
+
+Enable debug prints to see detected finger states:
 ```python
-self.click_delay = 0.5  # segundos entre clicks
+print(f"Fingers: {fingers} | State: {gesture_state}")
 ```
 
-**Ajustes:**
-- **Clicks rápidos**: `0.3` segundos
-- **Normal**: `0.5` segundos (recomendado)
-- **Prevenir clicks accidentales**: `0.8` segundos
+### Visual Debugging
 
-## 🎨 Personalización Avanzada
+The overlay draws the skeleton and current state. Use this to verify if the camera sees your hand correctly.
 
-### Agregar Nuevo Gesto
+## Safety & Limitations
 
-1. **Definir el patrón de dedos** en `detect_gesture()`:
+### Fail-Safe
 
-```python
-def detect_gesture(self, fingers):
-    thumb, index, middle, ring, pinky = fingers
-    
-    # Nuevo gesto: Solo pulgar y meñique (rock sign 🤘)
-    if thumb and not index and not middle and not ring and pinky:
-        return GestureState.CUSTOM_ACTION
-```
+PyAutoGUI's fail-safe is **disabled** (`FAILSAFE = False`) to allow full screen movement.
+To re-enable: `pyautogui.FAILSAFE = True`. (Moving mouse to corner throws exception).
 
-2. **Agregar el estado** al enum:
+### Limitations
 
-```python
-class GestureState(Enum):
-    IDLE = 0
-    MOVING = 1
-    CLICKING = 2
-    SCROLLING = 3
-    DRAGGING = 4
-    CUSTOM_ACTION = 5  # Nuevo estado
-```
+- **Lighting**: Crucial for tracking.
+- **Occlusion**: Hiding fingers prevents detection.
+- **Single Hand**: Current logic is optimizing for single-hand control.
 
-3. **Implementar la acción** en el loop principal:
-
-```python
-elif gesture_state == GestureState.CUSTOM_ACTION:
-    # Tu acción personalizada
-    pyautogui.hotkey('win', 'd')  # Mostrar escritorio
-```
-
-### Ejemplos de Acciones Personalizadas
-
-```python
-# Click derecho
-pyautogui.rightClick()
-
-# Doble click
-pyautogui.doubleClick()
-
-# Atajos de teclado
-pyautogui.hotkey('ctrl', 'c')  # Copiar
-pyautogui.hotkey('ctrl', 'v')  # Pegar
-pyautogui.hotkey('alt', 'tab')  # Cambiar ventana
-
-# Escribir texto
-pyautogui.write('Hola Mundo', interval=0.1)
-
-# Presionar teclas
-pyautogui.press('enter')
-pyautogui.press('space')
-```
-
-## 🔧 Optimización de Rendimiento
-
-### Reducir Latencia
-
-```python
-# Reducir resolución de cámara
-self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
-self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
-
-# Reducir complejidad de MediaPipe
-self.hands = self.mp_hands.Hands(
-    model_complexity=0,  # 0=ligero, 1=completo (default)
-    max_num_hands=1
-)
-```
-
-### Mejorar FPS
-
-```python
-# Procesar cada N frames
-frame_count = 0
-if frame_count % 2 == 0:  # Procesar 1 de cada 2 frames
-    results = self.hands.process(rgb_frame)
-frame_count += 1
-```
-
-## 🐛 Debugging
-
-### Visualizar Coordenadas
-
-```python
-# Mostrar coordenadas de landmarks
-for idx, landmark in enumerate(hand_landmarks.landmark):
-    print(f"Landmark {idx}: x={landmark.x:.3f}, y={landmark.y:.3f}")
-```
-
-### Logging de Gestos
-
-```python
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-
-# En detect_gesture()
-logger.debug(f"Fingers: {fingers}, Gesture: {gesture_state}")
-```
-
-### Modo de Prueba (Sin Control del Mouse)
-
-```python
-# En __init__()
-self.test_mode = True  # Activar modo prueba
-
-# En move_cursor()
-if not self.test_mode:
-    pyautogui.moveTo(smooth_x, smooth_y)
-else:
-    print(f"TEST: Would move to ({smooth_x}, {smooth_y})")
-```
-
-## 📊 Métricas de Rendimiento
-
-### Benchmarks Típicos
-
-| Hardware | FPS | Latencia | CPU |
-|----------|-----|----------|-----|
-| i5 8th Gen + Webcam 720p | 25-30 | ~50ms | 15-20% |
-| i7 10th Gen + Webcam 1080p | 30+ | ~30ms | 10-15% |
-| Laptop básico + Webcam 480p | 15-20 | ~80ms | 25-35% |
-
-### Monitoreo en Tiempo Real
-
-El overlay muestra:
-- **FPS**: Frames por segundo procesados
-- **State**: Estado actual del gesto
-- **Cursor**: Posición del cursor en pantalla
-
-## 🔒 Seguridad y Limitaciones
-
-### Fail-Safe Desactivado
-
-```python
-pyautogui.FAILSAFE = False
-```
-
-⚠️ **IMPORTANTE**: El fail-safe de PyAutoGUI está desactivado para permitir movimientos suaves. Normalmente, mover el mouse a la esquina superior izquierda detiene PyAutoGUI.
-
-**Para reactivarlo** (recomendado durante desarrollo):
-```python
-pyautogui.FAILSAFE = True
-```
-
-### Limitaciones Conocidas
-
-1. **Iluminación**: Requiere buena iluminación para detección confiable
-2. **Fondo**: Fondos complejos pueden afectar la detección
-3. **Distancia**: Funciona mejor a 30-60cm de la cámara
-4. **Velocidad**: Movimientos muy rápidos pueden perder tracking
-5. **Una mano**: Solo detecta una mano a la vez
-
-## 🚀 Mejoras Futuras
-
-### Ideas para Implementar
-
-- [ ] Soporte para dos manos
-- [ ] Gestos dinámicos (movimientos en el tiempo)
-- [ ] Calibración automática por usuario
-- [ ] Perfiles de gestos personalizables
-- [ ] Integración con reconocimiento de voz
-- [ ] Modo de entrenamiento para nuevos gestos
-- [ ] Soporte para múltiples monitores
-- [ ] Grabación y reproducción de macros gestuales
-
-## 📚 Referencias
+## References
 
 - [MediaPipe Hands](https://google.github.io/mediapipe/solutions/hands.html)
-- [OpenCV Documentation](https://docs.opencv.org/)
-- [PyAutoGUI Documentation](https://pyautogui.readthedocs.io/)
-
----
-
-**¿Preguntas o problemas?** Consulta el README.md principal o abre un issue.
+- [OpenCV Docs](https://docs.opencv.org/)
+- [PyAutoGUI Docs](https://pyautogui.readthedocs.io/)
